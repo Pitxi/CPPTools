@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# LibTools
+# LibCPPTools
 #
 # A library with helper functions and classes to use in C++ projects.
 #
