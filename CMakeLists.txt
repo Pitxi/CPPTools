@@ -30,7 +30,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake modules"
 # Install prefix
 set(CMAKE_INSTALL_PREFIX "/usr")
 find_package(ConfigPackage REQUIRED)
-ConfigPackage("cpptools" "1.0.0.0" "org.kazires" "A GTK based C++ class creation tool.")
+ConfigPackage("cpptools" "1.0.0.0" "org.kazires" "C++ Library with miscellaneous tools.")
 
 # Colours for messages.
 find_package(Colours)
