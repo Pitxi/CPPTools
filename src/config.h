@@ -20,9 +20,9 @@
 #define VERSION_MINOR 0 ///< Package version minor.
 #define VERSION_PATCH 0 ///< Package version patch.
 #define VERSION_TWEAK 0 ///< Package version tweak.
-#define PROJECT_NAME "LibCPPTools" ///< Nombre del proyecto.
+#define PROJECT_NAME "CPPTools" ///< Nombre del proyecto.
 #define APP_ID "org.kazires.cpptools" ///< Application ID.
 #define APP_PATH "/org/kazires/cpptools/" ///< Application path.
 #define PACKAGE "cpptools" ///< Package name.
 #define LOCALE_DIR "/usr/share/locale/" ///< Locales directory.
-#define RELEASE ///< The build type.
+#define  ///< The build type.

@@ -1,5 +1,5 @@
-LibCPPTools
+CPPTools
 ===========
 
-C++ library with miscellaneous tools and helper functions used in some of my
+C++ library with miscellaneous classes and helper functions used in some of my
 other projects.

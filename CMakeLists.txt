@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# LibCPPTools
+# CPPTools
 #
 # A library with helper functions and classes to use in C++ projects.
 #
@@ -24,7 +24,7 @@ cmake_policy(VERSION 2.8)
 # ---------------------
 # Project configuration
 # ---------------------
-project("LibCPPTools")
+project("CPPTools" CXX)
 # Include custom modules path.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake modules")
 # Install prefix
@@ -66,9 +66,12 @@ set(HEADERS
     src/resourcemanager.hpp)
 
 add_library("${PACKAGE}" SHARED ${SOURCES} ${HEADERS})
-add_executable(test src/main.cpp)
 target_link_libraries("${PACKAGE}" ${GDKMM_LIBRARIES})
-target_link_libraries(test "${PACKAGE}")
+
+if (CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+    add_executable(test src/main.cpp)
+    target_link_libraries(test "${PACKAGE}")
+endif()
 
 # ---------------------
 # Doxygen documentation
@@ -88,53 +91,8 @@ endif ()
 # ------------
 # Translations
 # ------------
-# - Creates a custom target named pot to create the PO Template file.
-# - Creates custom targets for every existing translation. This targets will be
-#   built within the ALL target.
-#   The PO files with the translations must be at translations directory on the
-#   project source directory.
-#   The MO files will be created at locale directory in the project binary
-#   directory.
-#   If BUILD_TYPE value is RELEASE the mo files will be installed on install
-#   target.
-# -----------------------------------------------------------------------------
-
-find_package(XGettext REQUIRED)
-
-set(TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
-
-if(MSGFMT_FOUND)
-    file(GLOB PO_FILES "${TRANSLATIONS_DIR}/*.po")
-
-    foreach(po_file IN LISTS PO_FILES)
-        get_filename_component(language "${po_file}" NAME_WE)
-
-        add_custom_target("po-${language}" ALL
-                          mkdir -p "${PROJECT_BINARY_DIR}/locale/${language}/LC_MESSAGES"
-                          COMMAND "${MSGFMT_EXECUTABLE}"
-                          "--output=${PROJECT_BINARY_DIR}/locale/${language}/LC_MESSAGES/${PACKAGE}.mo" "${po_file}"
-                          WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-                          COMMENT "Processing PO file for locale '${language}'..." VERBATIM)
-    endforeach()
-endif()
-
-if(XGETTEXT_FOUND)
-    set(COPYRIGHT_HOLDER "Javier Campón Pichardo")
-    set(PACKAGE_BUG_REPORT javiercampon@gmail.com)
-
-    add_custom_target(pot
-                      mkdir -p "${TRANSLATIONS_DIR}"
-                      COMMAND "${XGETTEXT_EXECUTABLE}"
-                      "--default-domain=${PACKAGE}" "--output-dir=${TRANSLATIONS_DIR}" "--output=${PACKAGE}.pot"
-                      --from-code=UTF-8 --language=C++ --keyword=_ --indent --sort-by-file
-                      "--package-name=${PACKAGE}"
-                      "--package-version=${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK}"
-                      "--copyright-holder=${COPYRIGHT_HOLDER}" "--msgid-bugs-address=${PACKAGE_BUG_REPORT}"
-                      ${SOURCES} ${HEADERS}
-                      COMMENT "Creating POT file at '${TRANSLATIONS_DIR}'...")
-
-    message(STATUS "${Green}Use '${Blue}make pot${Green}' to create the PO Template file.${ColourReset}")
-endif()
+find_package(ConfigTranslation REQUIRED)
+ConfigTranslation("Javier Campón Pichardo" "javiercamponp@gmail.com" ${HEADERS} ${SOURCES})
 
 # --------------
 # Install target
@@ -171,8 +129,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
         install(FILES "${PROJECT_BINARY_DIR}/${PACKAGE}.desktop" DESTINATION "share/applications") # Desktop file for system menus/dash.
     endif()
 
-    if(EXISTS "${PROJECT_BINARY_DIR}/lib${PACKAGE}.pc")
-        install(FILES "${PROJECT_BINARY_DIR}/lib${PACKAGE}.pc" DESTINATION "lib/pkgconfig")
+    if(EXISTS "${PROJECT_BINARY_DIR}/pkgconfig/")
+        install(DIRECTORY "${PROJECT_BINARY_DIR}/pkgconfig/" DESTINATION "lib/pkgconfig"
+                FILES_MATCHING PATTERN "*.pc")
     endif()
 
     message(STATUS "${Green}Use '${Blue}make install${Green}' to install the application.${ColourReset}")
