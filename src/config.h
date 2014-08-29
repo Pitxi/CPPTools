@@ -24,5 +24,5 @@
 #define APP_ID "org.kazires.cpptools" ///< Application ID.
 #define APP_PATH "/org/kazires/cpptools/" ///< Application path.
 #define PACKAGE "cpptools" ///< Package name.
-#define LOCALE_DIR "/usr/share/locale/" ///< Locales directory.
+#define LOCALE_DIR "./locale" ///< Locales directory.
 #define  ///< The build type.

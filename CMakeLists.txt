@@ -92,7 +92,7 @@ endif ()
 # Translations
 # ------------
 find_package(ConfigTranslation REQUIRED)
-ConfigTranslation("Javier Campón Pichardo" "javiercamponp@gmail.com" ${HEADERS} ${SOURCES})
+ConfigTranslation("Javier Campón Pichardo" "javiercamponp@gmail.com" _)
 
 # --------------
 # Install target
